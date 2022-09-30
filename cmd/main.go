@@ -1,25 +1,27 @@
 package main
 
 import (
+	"log"
+
 	"goLang"
+	"goLang/internal/config"
 	"goLang/pkg/handler"
 	"goLang/pkg/repository"
 	"goLang/pkg/service"
-	"log"
 )
 
 func main() {
+	env := config.GetAppEnvironment()
+	log.Println("current env", env)
 
-	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     "localhost",
-		Port:     "5432",
-		Username: "postgres",
-		Password: "1234",
-		DBName:   "api_go",
-		SSLMode:  "disable",
-	})
+	dbConf, err := config.GetDbConfig(env)
 	if err != nil {
-		log.Fatalf("Failed on initialize db: %s", err.Error())
+		log.Fatalln(err)
+	}
+
+	db, err := repository.NewPostgresDB(dbConf)
+	if err != nil {
+		log.Fatalln("Failed on initialize db:", err)
 	}
 
 	repos := repository.NewRepository(db)
