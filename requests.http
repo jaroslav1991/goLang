@@ -1,3 +1,17 @@
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "users.CreateUser",
+  "id": "1",
+  "params": [{
+    "email": "jopa@gmail.com",
+    "name": "4lenomer"
+  }]
+}
+
+###
 POST http://localhost:8080/users/create
 Content-Type: application/json
 
