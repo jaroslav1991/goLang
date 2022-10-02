@@ -1,13 +1,14 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
+	"goLang/pkg/user/storage"
 	"log"
 
 	"goLang"
 	"goLang/internal/config"
 	"goLang/pkg/handler"
 	"goLang/pkg/repository"
-	"goLang/pkg/service"
 )
 
 func main() {
@@ -24,12 +25,16 @@ func main() {
 		log.Fatalln("Failed on initialize db:", err)
 	}
 
-	repos := repository.NewRepository(db)
-	services := service.NewService(repos)
-	handlers := handler.HewHandler(services)
+	storage := storage.NewStorage(db)
+	handler := handler.NewHandler(storage)
 
-	srv := new(goLang.Server)
-	if err := srv.Run("8000", handlers.InitRoutes()); err != nil {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/users/create", handler.CreateUser).Methods("POST")
+	router.HandleFunc("/users/get", handler.GetUsers).Methods("GET")
+	router.HandleFunc("/user/get", handler.GetUserById).Methods("GET")
+
+	srv := &goLang.Server{}
+	if err := srv.Run("8080", router); err != nil {
 		log.Fatalf("error while running http server %s", err.Error())
 	}
 }

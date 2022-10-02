@@ -1,0 +1,19 @@
+POST http://localhost:8080/users/create
+Content-Type: application/json
+
+{
+  "email": "jopa@gmail.com",
+  "name": "4lenomer"
+}
+
+###
+
+GET http://localhost:8080/user/get
+Content-Type: application/json
+
+{
+  "id": 22
+}
+
+###
+

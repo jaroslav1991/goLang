@@ -2,13 +2,10 @@ package repository
 
 import "database/sql"
 
-type Authorization interface {
-}
-
 type Repository struct {
-	Authorization
+	db *sql.DB
 }
 
 func NewRepository(db *sql.DB) *Repository {
-	return &Repository{}
+	return &Repository{db: db}
 }
