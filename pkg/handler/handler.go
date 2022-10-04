@@ -11,6 +11,7 @@ import (
 type Storage interface {
 	Create(user *user.User) error
 	GetUser(id int) (*user.User, error)
+	FindUsersEmail(email string) (*user.User, error)
 }
 
 type handler struct {

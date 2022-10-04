@@ -6,28 +6,41 @@ Content-Type: application/json
   "method": "users.CreateUser",
   "id": "1",
   "params": [{
-    "email": "jopa@gmail.com",
-    "name": "4lenomer"
+    "email": "jaroslav@gmail.com",
+    "password": "jar",
+    "name": "jar"
   }]
 }
 
 ###
-POST http://localhost:8080/users/create
+POST http://localhost:8080/
 Content-Type: application/json
 
 {
-  "email": "jopa@gmail.com",
-  "name": "4lenomer"
+  "jsonrpc": "2.0",
+  "method": "users.GetUserById",
+  "id": "2",
+  "params": [{
+    "id": 50
+  }]
+
 }
 
 ###
 
-GET http://localhost:8080/user/get
+
+
+POST http://localhost:8080/
 Content-Type: application/json
 
 {
-  "id": 22
+  "jsonrpc": "2.0",
+  "method": "users.FindUsersByEmail",
+  "id": "3",
+  "params": [{
+    "email": "jo%"
+  }]
+
 }
 
-###
 
