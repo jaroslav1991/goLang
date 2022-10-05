@@ -15,13 +15,34 @@ func NewStorage(db *sql.DB) *storage {
 }
 
 const (
-	createUserQuery  = `insert into users (email, name, password_hash) values ($1, $2, '') returning id`
-	getUserByIdQuery = `select name, email from users  where id=$1`
-	getUsersQuery    = `select * from users`
-	getUserByEmail   = `select id, name, email from users where email LIKE $1`
+	createUserQuery       = `insert into users (email, name, password_hash) values ($1, $2, '') returning id`
+	getUserByIdQuery      = `select name, email from users  where id=$1`
+	getUsersQuery         = `select * from users`
+	getUserByEmail        = `select id, name, email from users where email LIKE $1`
+	getUserByNameAndEmail = `select id, name, email from users where name LIKE $1 and email LIKE $2`
 )
 
 func (s *storage) GetUsers() {}
+
+func (s *storage) FindUsersNameEmail(name, email string) ([]user.User, error) {
+	rows, err := s.db.Query(getUserByNameAndEmail, name, email)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []user.User
+
+	for rows.Next() {
+		var user user.User
+		if err := rows.Scan(&user.UserId, &user.Name, &user.Email); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+		log.Printf("id: %d, name: %s, email: %s", user.UserId, user.Name, user.Email)
+	}
+	return users, nil
+}
 
 func (s *storage) FindUsersEmail(email string) ([]user.User, error) {
 	rows, err := s.db.Query(getUserByEmail, email)
@@ -30,18 +51,18 @@ func (s *storage) FindUsersEmail(email string) ([]user.User, error) {
 	}
 	defer rows.Close()
 
-	var usrs []user.User
+	var users []user.User
 
 	for rows.Next() {
 		var user user.User
 		if err := rows.Scan(&user.UserId, &user.Name, &user.Email); err != nil {
 			return nil, err
 		}
-		usrs = append(usrs, user)
+		users = append(users, user)
 		log.Printf("id: %d, name: %s, email: %s", user.UserId, user.Name, user.Email)
 
 	}
-	return usrs, nil
+	return users, nil
 }
 
 func (s *storage) GetUser(id int) (*user.User, error) {
