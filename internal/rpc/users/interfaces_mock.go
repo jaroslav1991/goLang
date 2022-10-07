@@ -48,6 +48,36 @@ func (mr *MockStorageMockRecorder) Create(user interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockStorage)(nil).Create), user)
 }
 
+// FindUsersEmail mocks base method.
+func (m *MockStorage) FindUsersEmail(email string) ([]user.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUsersEmail", email)
+	ret0, _ := ret[0].([]user.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindUsersEmail indicates an expected call of FindUsersEmail.
+func (mr *MockStorageMockRecorder) FindUsersEmail(email interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsersEmail", reflect.TypeOf((*MockStorage)(nil).FindUsersEmail), email)
+}
+
+// FindUsersNameEmail mocks base method.
+func (m *MockStorage) FindUsersNameEmail(name, email string) ([]user.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUsersNameEmail", name, email)
+	ret0, _ := ret[0].([]user.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindUsersNameEmail indicates an expected call of FindUsersNameEmail.
+func (mr *MockStorageMockRecorder) FindUsersNameEmail(name, email interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsersNameEmail", reflect.TypeOf((*MockStorage)(nil).FindUsersNameEmail), name, email)
+}
+
 // GetUser mocks base method.
 func (m *MockStorage) GetUser(id int) (*user.User, error) {
 	m.ctrl.T.Helper()
